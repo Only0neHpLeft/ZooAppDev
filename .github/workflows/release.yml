@@ -8,12 +8,12 @@ on:
       app-slug:
         description: "The fully qualified slug of your app (org-name/app-name)"
         required: true
-        default: "zoo_db/zoo-database"
+        default: "zoodatabase/zoodb"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
-  CN_APPLICATION: ${{ github.event.inputs.app-slug || 'zoo_db/zoo-database' }}
+  CN_APPLICATION: ${{ github.event.inputs.app-slug || 'zoodatabase/zoodb' }}
 jobs:
   draft:
     runs-on: ubuntu-22.04
