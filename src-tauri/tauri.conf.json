@@ -25,7 +25,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["msi", "nsis", "dmg", "app"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -36,11 +36,11 @@
     "createUpdaterArtifacts": true
   },
   "plugins": {
-	  "updater": {
-		  "endpoints": [
-			  "https://cdn.crabnebula.app/update/zoodb/zoo-database/{{target}}-{{arch}}/{{current_version}}"
-		  ],
-		  "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM1MTkwMjEzRjdGOUQ1QkUKUldTKzFmbjNFd0laTmE4Sng0K3Bqc1g5bVpTZ1k5ck9ZKzY5aUlqZVRhMUFuS0Z0S0FKek5uNEkK"
-	  }
+    "updater": {
+      "endpoints": [
+        "https://cdn.crabnebula.app/update/zoodb/zoo-database/{{target}}-{{arch}}/{{current_version}}"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM1MTkwMjEzRjdGOUQ1QkUKUldTKzFmbjNFd0laTmE4Sng0K3Bqc1g5bVpTZ1k5ck9ZKzY5aUlqZVRhMUFuS0Z0S0FKek5uNEkK"
+    }
   }
 }

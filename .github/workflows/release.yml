@@ -16,7 +16,7 @@ env:
   CN_APPLICATION: ${{ github.event.inputs.app-slug || 'zoodatabase/zoodb' }}
 jobs:
   draft:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Create draft release
@@ -26,23 +26,34 @@ jobs:
           api-key: ${{ secrets.CN_API_KEY }}
   build:
     needs: draft
-    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install Linux dependencies
+          
+      - name: Install Rust (Stable)
+        uses: dtolnay/rust-toolchain@stable
+        
+      - name: Install Dependencies (macOS)
+        if: matrix.platform == 'macos-latest'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf libsoup-3.0-dev libjavascriptcoregtk-4.0-dev build-essential curl wget file
-      - name: Install Dependencies
-        run: |
-          npm install
+          rustup target add aarch64-apple-darwin
+          rustup target add x86_64-apple-darwin
+          
+      - name: Install frontend dependencies
+        run: npm install
+        
       - name: Build Tauri App
-        run: |
-          npm run tauri:build
+        run: npm run tauri:build
+        
       - name: Upload assets
         uses: crabnebula-dev/cloud-release@v0
         with:
@@ -51,7 +62,7 @@ jobs:
           path: ./src-tauri
   publish:
     needs: build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Publish release
