@@ -1,3 +1,5 @@
+use tauri::Manager;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -13,6 +15,13 @@ pub fn run() {
                         .build(),
                 )?;
             }
+            
+            // Get the main window and set its title with version
+            if let Some(window) = app.get_webview_window("main") {
+                let version = app.package_info().version.to_string();
+                window.set_title(&format!("Zoo Databáze | Aplikace v{}", version))?;
+            }
+            
             Ok(())
         })
         .run(tauri::generate_context!())
