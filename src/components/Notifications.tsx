@@ -81,7 +81,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({
     }`}
   >
     {label}
-    {id === 'unread' && typeof unreadCount === 'number' && (
+    {id === 'all' && typeof unreadCount === 'number' && unreadCount > 0 && (
       <span className="ml-auto text-xs bg-slate-700 px-2 py-0.5 rounded-full">
         {unreadCount}
       </span>
@@ -204,7 +204,7 @@ const Notifications: React.FC = () => {
                 id={filter.id}
                 label={filter.label}
                 isSelected={selectedFilter === filter.id}
-                unreadCount={filter.id === 'unread' ? unreadCount : undefined}
+                unreadCount={filter.id === 'all' ? unreadCount : undefined}
                 onClick={() => setSelectedFilter(filter.id)}
               />
             ))}

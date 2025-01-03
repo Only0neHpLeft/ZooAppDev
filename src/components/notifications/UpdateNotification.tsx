@@ -21,12 +21,12 @@ export const UpdateNotification: React.FC<UpdateNotificationProps> = ({
 
   return (
     <BaseNotification
-      title="Update Available"
-      message={`Version ${version} is now available with new features and improvements.`}
+      title="Nový verze k dispozici"
+      message={`Verze ${version} je nyní k dispozici s novými funkcemi a technickým laděním.`}
       icon={<Download className="w-5 h-5 text-indigo-400" />}
       onClose={onClose}
       onAction={handleInstall}
-      actionLabel="Install"
+      actionLabel="Update"
       variant="indigo"
     />
   );

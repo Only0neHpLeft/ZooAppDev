@@ -25,22 +25,28 @@ export const BaseNotification = memo<ToastProps>(({
   onAction,
   actionLabel,
   icon,
-  variant = 'indigo'
+  variant = 'indigo',
+  id
 }) => {
   const [mounted, setMounted] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
     const mountTimer = setTimeout(() => setMounted(true), ANIMATION_TIMING.MOUNT_DELAY);
-    const exitTimer = setTimeout(() => setIsExiting(true), ANIMATION_TIMING.DISPLAY_DURATION);
-    const closeTimer = setTimeout(onClose, ANIMATION_TIMING.DISPLAY_DURATION + ANIMATION_TIMING.EXIT_DURATION);
-
-    return () => {
-      clearTimeout(mountTimer);
-      clearTimeout(exitTimer);
-      clearTimeout(closeTimer);
-    };
-  }, [onClose]);
+    
+    if (!id?.startsWith('update-')) {
+      const exitTimer = setTimeout(() => setIsExiting(true), ANIMATION_TIMING.DISPLAY_DURATION);
+      const closeTimer = setTimeout(onClose, ANIMATION_TIMING.DISPLAY_DURATION + ANIMATION_TIMING.EXIT_DURATION);
+      
+      return () => {
+        clearTimeout(mountTimer);
+        clearTimeout(exitTimer);
+        clearTimeout(closeTimer);
+      };
+    }
+    
+    return () => clearTimeout(mountTimer);
+  }, [onClose, id]);
 
   const getVariantStyles = () => {
     const variants = {

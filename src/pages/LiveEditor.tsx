@@ -71,37 +71,57 @@ const Editor: React.FC<EditorProps> = ({ code, onChange, placeholder }) => {
 
   return (
     <div className="relative w-full h-full font-mono text-sm">
-      <div className="absolute inset-0 grid grid-cols-[2.5rem,1fr]">
-        <div className="bg-slate-900/50 border-r border-slate-800 select-none">
-          {lineNumbers.map((num) => (
-            <div key={num} className="text-slate-600 text-right pr-3 h-6 leading-6">
-              {String(num).padStart(2, '0')}
-            </div>
-          ))}
-          <div className="text-slate-600 text-right pr-3 h-6 leading-6">
-            {String(lineNumbers.length + 1).padStart(2, '0')}
-          </div>
-        </div>
-        <div className="relative">
-          <textarea
-            ref={textareaRef}
-            value={code}
-            onChange={handleInput}
-            onClick={handleClick}
-            onKeyUp={(e) => updateCurrentLine(e.currentTarget)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            spellCheck={false}
-            className="w-full h-full resize-none py-0 px-4 bg-transparent text-slate-300 focus:outline-none font-mono text-sm leading-6"
-            style={{ lineHeight: '1.5rem', minHeight: '100%', tabSize: 4 }}
-            placeholder={placeholder}
-          />
-          {isFocused && (
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="relative w-full h-full flex">
+          {/* Line Numbers */}
+          <div className="bg-slate-900/50 border-r border-slate-800 select-none px-4 flex flex-col">
+            {lineNumbers.map((num) => (
+              <div
+                key={num}
+                className={`text-slate-600 text-left h-6 leading-6 ${
+                  num === currentLine && isFocused
+                    ? "bg-slate-800/30"
+                    : "bg-transparent"
+                }`}
+                style={{ lineHeight: '1.5rem' }}
+              >
+                {String(num).padStart(2, '0')}
+              </div>
+            ))}
             <div
-              className="absolute pointer-events-none left-0 right-0 h-6 bg-slate-800/30"
-              style={{ top: `${(currentLine - 1) * 1.5}rem` }}
+              className="text-slate-600 text-left h-6 leading-6"
+              style={{ lineHeight: '1.5rem' }}
+            >
+              {String(lineNumbers.length + 1).padStart(2, '0')}
+            </div>
+          </div>
+          {/* Text Area */}
+          <div className="relative w-full">
+            {/* Highlight Bar */}
+            {isFocused && (
+              <div
+                className="absolute pointer-events-none left-0 right-0 h-6 bg-slate-800/30"
+                style={{ top: `${(currentLine - 1) * 1.5}rem` }}
+              />
+            )}
+            <textarea
+              ref={textareaRef}
+              value={code}
+              onChange={handleInput}
+              onClick={handleClick}
+              onKeyUp={(e) => updateCurrentLine(e.currentTarget)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              spellCheck={false}
+              className="w-full h-full resize-none bg-transparent text-slate-300 focus:outline-none font-mono text-sm leading-6 pl-4"
+              style={{
+                lineHeight: '1.5rem',
+                minHeight: '100%',
+                tabSize: 4,
+              }}
+              placeholder={placeholder}
             />
-          )}
+          </div>
         </div>
       </div>
     </div>
@@ -323,7 +343,7 @@ export const LiveEditor: React.FC = () => {
     <div className="max-w-[1400px] mx-auto px-8 py-8">
       <div className="mb-8">
         <Link 
-          to={ROUTES.CATEGORY_DETAIL(':id')}
+          to={ROUTES.CATEGORY_DETAIL(id || '')}
           className="inline-flex items-center px-4 py-2 rounded-lg bg-slate-900/80 text-slate-400 hover:text-slate-200 border border-slate-800 transition-all duration-300 mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2"/>
@@ -440,7 +460,7 @@ export const LiveEditor: React.FC = () => {
           <div className={`absolute inset-0 transition-opacity duration-200 h-full ${
             activeTab === 'editor' ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}>
-            <Editor code={code} onChange={setCode} placeholder="SELECT * FROM Zvirata AS Z"/>
+            <Editor code={code} onChange={setCode} placeholder="SELECT Z.jmeno FROM Zvirata AS Z"/>
           </div>
   
           <div className={`absolute inset-0 transition-opacity duration-200 overflow-auto h-full ${
