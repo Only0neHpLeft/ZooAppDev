@@ -6,14 +6,14 @@ on:
   workflow_dispatch:
     inputs:
       app-slug:
-        description: "The slug of your app in your CrabNebula Cloud org"
+        description: "The fully qualified slug of your app (org-name/app-name)"
         required: true
-        default: "zoo-database"
+        default: "zoo_db/zoo-database"
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
-  CN_APPLICATION: ${{ github.event.inputs.app-slug || 'zoo-database' }}
+  CN_APPLICATION: ${{ github.event.inputs.app-slug || 'zoo_db/zoo-database' }}
 jobs:
   draft:
     runs-on: ubuntu-22.04
@@ -45,7 +45,7 @@ jobs:
         if: matrix.os == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y webkit2gtk-4.1 libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf  # Added additional dependencies
+          sudo apt-get install -y webkit2gtk-4.1 libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - name: build tauri app
         env:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
