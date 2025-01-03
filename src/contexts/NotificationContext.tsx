@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import { CSSProperties } from 'react';
 import { UnlockNotification } from '../components/notifications/UnlockNotification';
-import { UpdateNotification } from '../components/notifications/updateNotification';
+import { UpdateNotification } from '../components/notifications/UpdateNotification';
 
 interface Notification {
   id: string;

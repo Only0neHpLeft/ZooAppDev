@@ -42,7 +42,7 @@ jobs:
           npm install
       - name: Build Tauri App
         run: |
-          npm run tauri build
+          npm run tauri:build
       - name: Upload assets
         uses: crabnebula-dev/cloud-release@v0
         with:
