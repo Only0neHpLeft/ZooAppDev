@@ -16,6 +16,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import LiveEditor from './pages/LiveEditor';
+import ErrorBoundary from './ErrorBoundary';
 
 const STYLES = {
   container: 'min-h-screen bg-[#0A0F1E] relative overflow-x-hidden',
@@ -54,29 +55,31 @@ const AppRoutes: React.FC = () => (
 );
 
 const App: React.FC = () => {
-    useEffect(() => {
-        initDb().catch(console.error);
-    }, []);
-    
+  useEffect(() => {
+    initDb().catch(console.error);
+  }, []);
+   
   return (
-    <Router>
-      <NotificationProvider>
-        <AuthProvider>
-          <DatabaseProvider>
-          <UpdateManager />
-            <div className={STYLES.container}>
-              <BackgroundEffects />
-              <div className={STYLES.mainContent}>
-                <Navigation />
-                <main className={STYLES.mainSection}>
-                  <AppRoutes />
-                </main>
+    <ErrorBoundary>
+      <Router>
+        <NotificationProvider>
+          <AuthProvider>
+            <DatabaseProvider>
+              <UpdateManager />
+              <div className={STYLES.container}>
+                <BackgroundEffects />
+                <div className={STYLES.mainContent}>
+                  <Navigation />
+                  <main className={STYLES.mainSection}>
+                    <AppRoutes />
+                  </main>
+                </div>
               </div>
-            </div>
-          </DatabaseProvider>
-        </AuthProvider>
-      </NotificationProvider>
-    </Router>
+            </DatabaseProvider>
+          </AuthProvider>
+        </NotificationProvider>
+      </Router>
+    </ErrorBoundary>
   );
 };
 

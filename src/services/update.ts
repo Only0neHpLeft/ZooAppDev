@@ -8,9 +8,12 @@ export const useUpdateService = () => {
 
   const checkForUpdates = async () => {
     try {
+      console.log('Checking for updates...');
       const update = await check();
+      console.log('Update check result:', update);
       
       if (update?.available) {
+        console.log('Update available:', update.version);
         addNotification({
           id: `update-${update.version}`,
           type: 'update',
@@ -21,6 +24,13 @@ export const useUpdateService = () => {
       }
     } catch (error) {
       console.error('Failed to check for updates:', error);
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        });
+      }
     }
   };
 
